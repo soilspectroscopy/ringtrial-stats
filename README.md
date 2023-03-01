@@ -3,6 +3,7 @@ Soil spectroscopy ring trial
 
 -   <a href="#overview" id="toc-overview">Overview</a>
 -   <a href="#experiment" id="toc-experiment">Experiment</a>
+-   <a href="#results" id="toc-results">Results</a>
 
 ## Overview
 
@@ -34,3 +35,11 @@ In addition, the instruments were grouped into four clusters and linked
 to their metadata information. Therefore, not only the modeling
 combinations are analyzed, but also the clusters and their associated
 metadata that may be driving the variations.
+
+Compact letter display (cld) is provided both for median (top, and bold
+horizontal bar) and 10th percentile (bottom, and light square) after
+running permutation tests.
+
+# Results
+
+<img src="outputs/plot_cld_plsr.png" heigth=100% width=100%>
