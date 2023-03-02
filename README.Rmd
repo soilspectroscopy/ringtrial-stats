@@ -49,6 +49,10 @@ Example:
 
 ## Metadata clusters
 
+<img src="outputs/plot_cld_cluster_all.png" heigth=100% width=100%>
+
+## Best combination
+
 <!-- <img src="outputs/plot_best_preprocessing_cubist.png" heigth=100% width=100%> -->
 
 <!-- <img src="outputs/plot_best_preprocessing_mbl.png" heigth=100% width=100%> -->

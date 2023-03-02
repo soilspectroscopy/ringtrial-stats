@@ -7,6 +7,8 @@ Soil spectroscopy ring trial
 -   <a href="#model-types" id="toc-model-types">Model types</a>
 -   <a href="#metadata-clusters" id="toc-metadata-clusters">Metadata
     clusters</a>
+-   <a href="#best-combination" id="toc-best-combination">Best
+    combination</a>
 
 ## Overview
 
@@ -54,6 +56,10 @@ Example: <img src="outputs/plot_cld_example.png" heigth=100% width=100%>
 <img src="outputs/plot_cld_model_types_all.png" heigth=100% width=100%>
 
 ## Metadata clusters
+
+<img src="outputs/plot_cld_cluster_all.png" heigth=100% width=100%>
+
+## Best combination
 
 <!-- <img src="outputs/plot_best_preprocessing_cubist.png" heigth=100% width=100%> -->
 <!-- <img src="outputs/plot_best_preprocessing_mbl.png" heigth=100% width=100%> -->
