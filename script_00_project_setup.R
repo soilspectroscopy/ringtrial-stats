@@ -1,3 +1,4 @@
+
 ## Loading packages
 library("tidyverse")
 
@@ -7,12 +8,17 @@ if(!dir.exists("outputs")){dir.create("outputs")}
 ## Mounted disk for storing big files
 mnt.dir <- "~/projects/mnt-ringtrial/"
 
-## Copying performance results
+## Copying other results
 metadata.dir <- "~/projects/soilspec4gg-mac/ringtrial-metadata/"
 modeling.dir <- "~/projects/soilspec4gg-mac/ringtrial-modeling/"
 
+list.files(paste0(metadata.dir, "outputs/"))
+
 metatada.file <- paste0(metadata.dir, "outputs/instruments_metadata_clean.csv")
 file.copy(from = metatada.file, to = paste0("outputs/", basename(metatada.file)), overwrite = T)
+
+clustering.file <- paste0(metadata.dir, "outputs/proportions_clustering.csv")
+file.copy(from = clustering.file, to = paste0("outputs/", basename(clustering.file)), overwrite = T)
 
 list.files(paste0(modeling.dir, "outputs/"))
 performance <- list.files(paste0(modeling.dir, "outputs/"), pattern = "performance_metrics.csv|test_performance.csv")

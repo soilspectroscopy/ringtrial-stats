@@ -46,3 +46,7 @@ Example:
 ## Model types
 
 <img src="outputs/plot_cld_model_types_all.png" heigth=100% width=100%>
+
+## Metadata clusters
+
+<img src="outputs/plot_best_preprocessing_cubist.png" heigth=100% width=100%>

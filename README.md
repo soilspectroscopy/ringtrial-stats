@@ -5,6 +5,8 @@ Soil spectroscopy ring trial
 -   <a href="#experiment" id="toc-experiment">Experiment</a>
 -   <a href="#preprocessings" id="toc-preprocessings">Preprocessings</a>
 -   <a href="#model-types" id="toc-model-types">Model types</a>
+-   <a href="#metadata-clusters" id="toc-metadata-clusters">Metadata
+    clusters</a>
 
 ## Overview
 
@@ -50,3 +52,7 @@ Example: <img src="outputs/plot_cld_example.png" heigth=100% width=100%>
 ## Model types
 
 <img src="outputs/plot_cld_model_types_all.png" heigth=100% width=100%>
+
+## Metadata clusters
+
+<img src="outputs/plot_best_preprocessing_cubist.png" heigth=100% width=100%>
