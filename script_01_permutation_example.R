@@ -204,7 +204,7 @@ plot.labels.median <- comparison.median %>%
 p.plsr.vert.cld <- p.plsr.vert +
   geom_text(data = plot.labels.median, aes(label = letter),
             color = "gray30", size = 3) +
-  labs(tittle = "Median statistical comparison of preprocessings - PLSR predictions",
+  labs(title = "Statistical comparison of preprocessings - PLSR predictions",
        caption = paste("Medians not sharing any letter are significantly different",
                        "by the permutation test at the 5% level of significance.\n",
                        "Box top notch refers to median while the lower notch refers to",
