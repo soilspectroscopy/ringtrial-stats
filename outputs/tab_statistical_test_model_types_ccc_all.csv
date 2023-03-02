@@ -1,0 +1,13 @@
+soil_property,model_type,median,letter
+carbon_org_perc,PLSR,0.9031540860856706,a
+carbon_org_perc,MBL,0.8453964300395236,b
+carbon_org_perc,Cubist,0.9149305619621444,a
+clay_perc,PLSR,0.6961749973918453,c
+clay_perc,MBL,0.8066491890943928,a
+clay_perc,Cubist,0.7804088872911618,b
+pH_H20,PLSR,0.7957177752902942,c
+pH_H20,MBL,0.8128236383799695,b
+pH_H20,Cubist,0.8389416739515537,a
+potassium_cmolkg,PLSR,0.7845769281130696,a
+potassium_cmolkg,MBL,0.5605708079998144,b
+potassium_cmolkg,Cubist,0.7576208453862382,a

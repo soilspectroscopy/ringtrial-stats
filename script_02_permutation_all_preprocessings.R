@@ -15,11 +15,20 @@ mnt.dir <- "~/projects/mnt-ringtrial/"
 ## Files
 list.files("outputs")
 
-perf.plsr <- read_csv("outputs/tab_CT-KSSL_PLSR_test_performance.csv")
+perf.plsr <- read_csv("outputs/tab_CT-KSSL_PLSR_test_performance.csv") %>%
+  mutate(model_type = "plsr", .before = 1)
 
-unique(perf.plsr$prep_spectra)
+perf.mbl <- read_csv("outputs/tab_CT-KSSL_MBL_test_performance.csv") %>%
+  mutate(model_type = "mbl", .before = 1)
 
-perf.plsr <- perf.plsr %>%
+perf.cubist <- read_csv("outputs/tab_CT-KSSL_Cubist_test_performance.csv") %>%
+  mutate(model_type = "cubist", .before = 1)
+
+performance <- bind_rows(perf.plsr, perf.mbl, perf.cubist)
+
+unique(performance$prep_spectra)
+
+performance <- performance %>%
   mutate(prep_spectra = recode(prep_spectra, "SNVplusSG1stDer" = "SNV+SG1stDer")) %>%
   mutate(prep_spectra = factor(prep_spectra,
                                levels = c("raw",
@@ -30,7 +39,7 @@ perf.plsr <- perf.plsr %>%
                                           "wavelet",
                                           "SST")))
 
-## Example
+## all
 
 # plot
 
@@ -41,40 +50,39 @@ f <- function(x) {
   data.frame(ymin = p05, y = p50, ymax = p50)
 }
 
-p.plsr.vert <- perf.plsr %>%
+p.dispersion.vert <- performance %>%
   ggplot(aes(x = prep_spectra, y = ccc,
              color = prep_spectra, fill = prep_spectra)) +
   facet_wrap(~soil_property, ncol = 1) +
-  geom_beeswarm(size = 1, cex = 1.5, method = "hex", show.legend = F) +
+  geom_beeswarm(size = 1, cex = 1.2, method = "hex", show.legend = F) +
   stat_summary(fun.data = f, geom = "crossbar", fill = NA,
                linewidth = 0.25, width = 0.75, show.legend = F) +
-  scale_y_continuous(limits = c(-0.1, 1.2), breaks = c(0,0.25,0.50,0.75,1.00)) +
+  scale_y_continuous(limits = c(-0.2, 1.2), breaks = c(0,0.25,0.50,0.75,1.00)) +
   labs(tittle = "",
        y = "Lin's CCC", x = NULL) +
   theme_light() +
   theme(legend.position = "bottom",
         panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank()); p.plsr.vert
+        panel.grid.minor = element_blank()); p.dispersion.vert
 
-# permutation test
+# permutation pairs
 
-perf.plsr
+performance
 
-perm.plsr <- perf.plsr %>%
+perm.models <- performance %>%
   select(soil_property, prep_spectra, ccc)
 
-soil.properties <- pull(distinct(perm.plsr, soil_property), soil_property)
-prep.spectra <- pull(distinct(perm.plsr, prep_spectra), prep_spectra)
+soil.properties <- pull(distinct(perm.models, soil_property), soil_property)
+prep.spectra <- pull(distinct(perm.models, prep_spectra), prep_spectra)
 
 prep.spectra.pairs <- t(combn(prep.spectra, 2))
-
 prep.spectra.pairs <- tibble("level1" = prep.spectra.pairs[,1],
                              "level2" = prep.spectra.pairs[,2]) %>%
   mutate_all(as.character)
 
 prep.spectra.pairs
 
-# function
+# permutation function
 
 permutation.test <- function(sample1, sample2,
                              p.position = 0.50, n.sim = 10000,
@@ -88,11 +96,11 @@ permutation.test <- function(sample1, sample2,
   if(hypothesis == "different") {
     
     original.dif <- abs(position.sample1-position.sample2)
-  
+    
   }
   
   permuted.dif <- sapply(1:n.sim, function(x) {
-  
+    
     permuted.subset <- sample(c(sample1, sample2), size = length(sample1))
     permuted.position <- quantile(permuted.subset, p=p.position)
     
@@ -118,7 +126,7 @@ sample1 = rnorm(n = 100, mean = 10, sd = 5)
 sample2 = rnorm(n = 100, mean = 12, sd = 5)
 permutation.test(sample1 = sample1, sample2 = sample2)
 
-## automated test
+# median comparison
 
 permutation.median.list <- list()
 
@@ -127,7 +135,7 @@ for(i in 1:length(soil.properties)) {
   
   isoil.property <- soil.properties[i]
   
-  data <- perm.plsr %>%
+  data <- perm.models %>%
     filter(soil_property == isoil.property)
   
   cat(paste0("Started ", isoil.property, " at ", now(), "\n"))
@@ -163,64 +171,42 @@ for(i in 1:length(soil.properties)) {
   
 }
 
-# long format
 permutation.median <- Reduce(bind_rows, permutation.median.list)
 permutation.median
 
-# example triangle visualization
-permutation.median %>%
-  filter(soil_property == "carbon_org_perc") %>%
-  corrr::retract(x = level1, y = level2, val = p_value)
+# final test and visualization
 
-# example compact letter display
-comparison.significance <- permutation.median %>%
-  filter(soil_property == "carbon_org_perc") %>%
-  mutate(comparison = paste(level1, level2, sep = "-")) %>%
-  select(comparison, p_value) %>%
-  deframe()
-
-comparison.medians <- perf.plsr %>%
-  filter(soil_property == "carbon_org_perc") %>%
-  select(prep_spectra, ccc) %>%
-  group_by(prep_spectra) %>%
-  summarise(ccc = quantile(ccc, p = 0.50), .groups = "drop") %>%
-  as.data.frame()
-
-comparison.letters <- multcompLetters3(z = "prep_spectra", y = "ccc",
-                                       x = comparison.significance, data = comparison.medians)$Letters %>%
-  enframe() %>%
-  rename(prep_spectra = name, letter = value)
-
-# Final test and visualization
-
-plot.labels.median <- permutation.median %>%
-  mutate(comparison = paste(level1, level2, sep = "-")) %>%
+plot.labels.median <- permutation.median %>% # comparison
+  mutate(comparison = paste(level1, level2, sep = "-")) %>% # comparison structure A-B
   select(soil_property, comparison, p_value) %>%
-  nest_by(soil_property, .key = "significance") %>%
-  mutate(significance = list(deframe(significance))) %>%
-  left_join({perf.plsr %>%
+  nest_by(soil_property, .key = "significance") %>% # nesting for further analysis
+  mutate(significance = list(deframe(significance))) %>% # transf. to named vector
+  left_join({performance %>% # median values
       group_by(soil_property, prep_spectra) %>%
       summarise(median = quantile(ccc, p=0.50), .groups = "drop") %>%
-      nest_by(soil_property, .key = "median")}, by = "soil_property") %>%
-  mutate(median = list(as.data.frame(median))) %>%
-  mutate(letter = list(multcompLetters3(z = "prep_spectra", y = "median",
-                                  x = significance, data = median)$Letters)) %>%
-  mutate(letter = list(enframe(letter))) %>%
-  mutate(letter = list(rename(letter, prep_spectra = name, letter = value))) %>%
-  mutate(join = list(left_join(median, letter, by = "prep_spectra"))) %>%
-  select(-significance, -median, -letter) %>%
-  unnest(join) %>%
-  mutate(ccc = 1.1)
-  
-p.plsr.vert.cld <- p.plsr.vert +
+      nest_by(soil_property, .key = "median")}, by = "soil_property") %>% # nesting for further analysis
+  mutate(median = list(as.data.frame(median))) %>% # mutating to required data.frame format
+  mutate(letter = list(multcompLetters3(z = "prep_spectra", y = "median", # cld
+                                        x = significance, data = median)$Letters)) %>%
+  mutate(letter = list(enframe(letter))) %>% # named vector to table
+  mutate(letter = list(rename(letter, prep_spectra = name, letter = value))) %>% # renaming
+  mutate(join = list(left_join(median, letter, by = "prep_spectra"))) %>% # joining the results
+  select(-significance, -median, -letter) %>% # cleaning
+  unnest(join) %>% # unnesting to original table format
+  mutate(ccc = 1.1) # plot y label position
+
+write_csv({plot.labels.median %>%
+    select(-ccc)}, "outputs/tab_statistical_test_preprocessings_ccc_all.csv")
+
+p.cld <- p.dispersion.vert +
   geom_text(data = plot.labels.median, aes(label = letter),
             color = "gray30", size = 3) +
-  labs(title = "Statistical comparison of preprocessings - PLSR predictions",
+  labs(title = "Statistical comparison of preprocessings",
        caption = paste("Medians not sharing any letter are significantly different",
                        "by the permutation test at the 5% level of significance.\n",
                        "Box top notch refers to median while the lower notch refers to",
-                       "the 10th percentile.")) +
-  theme(plot.caption = element_text(size = 8, face = "italic")); p.plsr.vert.cld
+                       "the 10th percentile. Model types are pooled together.")) +
+  theme(plot.caption = element_text(size = 8, face = "italic")); p.cld
 
-ggsave("outputs/plot_cld_example.png", p.plsr.vert.cld,
+ggsave("outputs/plot_cld_preprocessings_all.png", p.cld,
        dpi = 300, units = "in", width = 7, height = 8, scale = 1)
