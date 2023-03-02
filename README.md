@@ -55,4 +55,7 @@ Example: <img src="outputs/plot_cld_example.png" heigth=100% width=100%>
 
 ## Metadata clusters
 
-<img src="outputs/plot_best_preprocessing_cubist.png" heigth=100% width=100%>
+<!-- <img src="outputs/plot_best_preprocessing_cubist.png" heigth=100% width=100%> -->
+<!-- <img src="outputs/plot_best_preprocessing_mbl.png" heigth=100% width=100%> -->
+
+<img src="outputs/plot_best_preprocessing_mbl_cubist.png" heigth=100% width=100%>
