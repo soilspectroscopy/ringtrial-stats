@@ -36,6 +36,5 @@ In addition, the instruments were grouped into four clusters and linked to their
 
 Compact letter display (cld) is provided both for median (top, and bold horizontal bar) and 10th percentile (bottom, and light square) after running permutation tests.
 
-# Results
-
-<img src="outputs/plot_cld_plsr.png" heigth=100% width=100%>
+Example:
+<img src="outputs/plot_cld_example.png" heigth=100% width=100%>

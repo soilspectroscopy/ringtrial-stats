@@ -3,7 +3,6 @@ Soil spectroscopy ring trial
 
 -   <a href="#overview" id="toc-overview">Overview</a>
 -   <a href="#experiment" id="toc-experiment">Experiment</a>
--   <a href="#results" id="toc-results">Results</a>
 
 ## Overview
 
@@ -40,6 +39,4 @@ Compact letter display (cld) is provided both for median (top, and bold
 horizontal bar) and 10th percentile (bottom, and light square) after
 running permutation tests.
 
-# Results
-
-<img src="outputs/plot_cld_plsr.png" heigth=100% width=100%>
+Example: <img src="outputs/plot_cld_example.png" heigth=100% width=100%>

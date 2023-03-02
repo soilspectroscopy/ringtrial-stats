@@ -58,20 +58,6 @@ p.plsr.vert <- perf.plsr %>%
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank()); p.plsr.vert
 
-# # rmse
-# 
-# perf.plsr %>%
-#   ggplot(aes(x = prep_spectra, y = rmse,
-#              color = prep_spectra, fill = prep_spectra)) +
-#   facet_wrap(~soil_property, ncol = 1, scale = "free_y") +
-#   geom_beeswarm(size = 1, cex = 1.2, method = "hex", show.legend = F) +
-#   stat_summary(fun.data = f, geom = "crossbar", fill = NA,
-#                linewidth = 0.25, width = 0.75, show.legend = F) +
-#   labs(tittle = "",
-#        y = "RMSE", x = NULL) +
-#   theme_light() + theme(legend.position = "bottom")
-
-
 ## Permutation test
 
 perf.plsr
@@ -103,11 +89,11 @@ permutation.test <- function(sample1, sample2,
   if(hypothesis == "different") {
     
     original.dif <- abs(position.sample1-position.sample2)
-  
+    
   }
   
   permuted.dif <- sapply(1:n.sim, function(x) {
-  
+    
     permuted.subset <- sample(c(sample1, sample2), size = length(sample1))
     permuted.position <- quantile(permuted.subset, p=p.position)
     
@@ -269,8 +255,8 @@ comparison.median <- permutation.median %>%
 plot.labels.median <- comparison.median %>%
   nest_by(soil_property) %>%
   mutate(result = list(cldList(p_value ~ comparison, data = data,
-                          threshold = 0.05,
-                          reversed = TRUE))) %>%
+                               threshold = 0.05,
+                               reversed = TRUE))) %>%
   select(-data) %>%
   unnest(result) %>%
   select(-MonoLetter) %>%
