@@ -75,7 +75,8 @@ dissim.SST <- read_csv(paste0(dir.dissimilarity, "dissim_euclidean_SST.csv")) %>
 
 distance <- bind_rows(dissim.raw, dissim.BOC, dissim.SG1stDer,
                       dissim.SNV, dissim.SNVplusSG1stDer, dissim.wavelet,
-                      dissim.SST)
+                      dissim.SST) %>%
+  mutate(prep_spectra = recode(prep_spectra, "SNVplusSG1stDer" = "SNV+SG1stDer"))
 
 distance <- distance %>%
   select(-ct_subset) %>%
@@ -150,7 +151,7 @@ p.cor.rmse <- ggplot(cor.result, aes(x = prep_spectra, y = soil_property, fill =
   geom_text(color = "gray20", size = 3) +
   scale_fill_gradient2(midpoint = 0, low = "darkred", mid = "white", high = "darkgreen") +
   facet_wrap(~model_type, ncol = 1) +
-  labs(tittle = "Correlation between RMSE and median dissimilarity", fill = "Correlation", x = NULL, y = NULL) +
+  labs(title = "Correlation between RMSE and median dissimilarity", fill = "Correlation", x = NULL, y = NULL) +
   theme_light() +
   theme(legend.position = "bottom",
         axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
@@ -166,7 +167,7 @@ p.cor.ccc <- ggplot(cor.result, aes(x = prep_spectra, y = soil_property, fill = 
   geom_text(color = "gray80", size = 3) +
   scale_fill_gradient2(midpoint = 0, low = "darkred", mid = "white", high = "darkgreen") +
   facet_wrap(~model_type, ncol = 1) +
-  labs(tittle = "Correlation between Lin's CCC and median dissimilarity", fill = "Correlation", x = NULL, y = NULL) +
+  labs(title = "Correlation between Lin's CCC and median dissimilarity", fill = "Correlation", x = NULL, y = NULL) +
   theme_light() +
   theme(legend.position = "bottom",
         axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
