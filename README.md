@@ -9,6 +9,9 @@ Soil spectroscopy ring trial
     clusters</a>
 -   <a href="#best-combination" id="toc-best-combination">Best
     combination</a>
+-   <a href="#correlation-between-performance-and-dissimilarity"
+    id="toc-correlation-between-performance-and-dissimilarity">Correlation
+    between performance and dissimilarity</a>
 
 ## Overview
 
@@ -65,3 +68,13 @@ Example: <img src="outputs/plot_cld_example.png" heigth=100% width=100%>
 <!-- <img src="outputs/plot_best_preprocessing_mbl.png" heigth=100% width=100%> -->
 
 <img src="outputs/plot_best_preprocessing_mbl_cubist.png" heigth=100% width=100%>
+
+## Correlation between performance and dissimilarity
+
+<img src="outputs/plot_cor_dissim_rmse.png" heigth=100% width=100%>
+
+<img src="outputs/plot_cor_dissim_ccc.png" heigth=100% width=100%>
+
+<img src="outputs/plot_lm_dissim_rmse.png" heigth=100% width=100%>
+
+<img src="outputs/plot_lm_dissim_ccc.png" heigth=100% width=100%>

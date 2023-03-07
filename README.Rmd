@@ -58,3 +58,14 @@ Example:
 <!-- <img src="outputs/plot_best_preprocessing_mbl.png" heigth=100% width=100%> -->
 
 <img src="outputs/plot_best_preprocessing_mbl_cubist.png" heigth=100% width=100%>
+
+## Correlation between performance and dissimilarity
+
+<img src="outputs/plot_cor_dissim_rmse.png" heigth=100% width=100%>
+
+<img src="outputs/plot_cor_dissim_ccc.png" heigth=100% width=100%>
+
+<img src="outputs/plot_lm_dissim_rmse.png" heigth=100% width=100%>
+
+<img src="outputs/plot_lm_dissim_ccc.png" heigth=100% width=100%>
+
