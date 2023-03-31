@@ -79,3 +79,33 @@ performance %>%
   summarise(median_ccc = median(ccc, na.rm = T),
             perc10th = quantile(ccc, p=0.1, na.rm = T)) %>%
   filter(cluster == "C2")
+
+## SNV, Cubist and MBL
+
+performance %>%
+  filter(prep_spectra %in% c("SNV")) %>%
+  filter(model_type %in% c("MBL", "SST")) %>%
+  group_by(soil_property, cluster) %>%
+  summarise(median_ccc = median(ccc, na.rm = T),
+            perc10th = quantile(ccc, p=0.1, na.rm = T)) %>%
+  filter(cluster == "C2")
+
+## SST, Cubist and MBL
+
+performance %>%
+  filter(prep_spectra %in% c("SST")) %>%
+  filter(model_type %in% c("MBL", "SST")) %>%
+  group_by(soil_property, cluster) %>%
+  summarise(median_ccc = median(ccc, na.rm = T),
+            perc10th = quantile(ccc, p=0.1, na.rm = T)) %>%
+  filter(cluster == "C2")
+
+## SST, Cubist and MBL
+
+performance %>%
+  filter(prep_spectra %in% c("SST")) %>%
+  filter(model_type %in% c("MBL", "SST")) %>%
+  group_by(soil_property, cluster) %>%
+  summarise(median_ccc = median(ccc, na.rm = T),
+            perc10th = quantile(ccc, p=0.1, na.rm = T)) %>%
+  filter(cluster == "C4")
