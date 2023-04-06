@@ -132,12 +132,13 @@ performance.3 <- performance %>%
 
 p.dispersion.vert.3 <- performance.3 %>%
   ggplot(aes(x = cluster, y = ccc,
-             color = model_type)) +
-  scale_color_manual(values = c("gray20", "gray70")) +
+             group = model_type, color = model_type)) +
+  geom_beeswarm(size = 0.35, cex = 0.85, dodge.width = 0.75,
+                method = "hex", show.legend = T) +
+  stat_summary(fun.data = f, geom = "crossbar", fill = NA,
+               position = "dodge", linewidth = 0.25, width = 0.75, show.legend = T) +
   facet_grid(soil_property~prep_spectra) +
-  geom_beeswarm(size = 0.35, cex = 0.85, color = "gray30", method = "hex", show.legend = F) +
-  stat_summary(fun.data = f, geom = "crossbar", fill = NA, color = "gray40",
-               linewidth = 0.25, width = 0.75, show.legend = F) +
+  scale_color_manual(values = c("gray30", "gray70")) +
   scale_y_continuous(limits = c(-0.2, 1.2), breaks = c(0,0.25,0.50,0.75,1.00)) +
   labs(colour = "", fill = "",
        y = "Lin's CCC", x = NULL) +
@@ -147,8 +148,6 @@ p.dispersion.vert.3 <- performance.3 %>%
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank()) +
   guides(col = guide_legend(nrow = 1)); p.dispersion.vert.3
-
-## Together
 
 ## Together
 
