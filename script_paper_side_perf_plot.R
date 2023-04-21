@@ -6,7 +6,8 @@ library("readr")
 library("corrr")
 library("qs")
 # remotes::install_github("coolbutuseless/ggpattern")
-library(ggpattern)
+library("ggpattern")
+library("tidytext")
 
 options(scipen = 999)
 
@@ -112,12 +113,35 @@ performance.plot <- bind_rows(performance.10CV, performance) %>%
                                                           "afterSST")))
 ## Visualization
 
+# p.metrics <- performance.plot %>%
+#   mutate(organization = as.factor(organization)) %>%
+#   # filter(soil_property == "OC") %>%
+#   ggplot(aes(x = organization, y = ccc, fill = label, pattern = preprocessing)) +
+#   geom_col_pattern(position = position_dodge(preserve = "single"),
+#                    color = "gray10",
+#                    pattern_angle = 45,
+#                    pattern_density = 0.1,
+#                    pattern_spacing = 0.025,
+#                    pattern_key_scale_factor = 1,
+#                    show.legend = TRUE) +
+#   labs(x = "Instrument", y = "Lin's CCC", fill = "", pattern = "") +
+#   facet_wrap(~soil_property, ncol = 1, scale = "free_x") +
+#   scale_fill_manual(values = c("gray20", "gray40", "gray60", "gray80")) +
+#   scale_pattern_manual(values = c(beforeSST = "none", afterSST = "stripe")) +
+#   theme_light() +
+#   theme(legend.position = "bottom") +
+#   guides(fill = guide_legend(nrow = 2, byrow = TRUE)) +
+#   guides(pattern = guide_legend(override.aes = list(fill = "white")),
+#          fill = guide_legend(override.aes = list(pattern = "none")))
+
+# REORDERED
+
 p.metrics <- performance.plot %>%
   mutate(organization = as.factor(organization)) %>%
   # filter(soil_property == "OC") %>%
-  ggplot() +
-  geom_col_pattern(aes(x = organization, y = ccc, fill = label, pattern = preprocessing),
-                   position = position_dodge(preserve = "single"),
+  ggplot(aes(x = reorder_within(organization, ccc, soil_property), y = ccc,
+             fill = label, pattern = preprocessing)) +
+  geom_col_pattern(position = position_dodge(preserve = "single"),
                    color = "gray10",
                    pattern_angle = 45,
                    pattern_density = 0.1,
@@ -125,7 +149,8 @@ p.metrics <- performance.plot %>%
                    pattern_key_scale_factor = 1,
                    show.legend = TRUE) +
   labs(x = "Instrument", y = "Lin's CCC", fill = "", pattern = "") +
-  facet_wrap(~soil_property, ncol = 1) +
+  scale_x_reordered() +
+  facet_wrap(~soil_property, ncol = 1, scale = "free_x") +
   scale_fill_manual(values = c("gray20", "gray40", "gray60", "gray80")) +
   scale_pattern_manual(values = c(beforeSST = "none", afterSST = "stripe")) +
   theme_light() +
