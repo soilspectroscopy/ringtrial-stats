@@ -72,7 +72,7 @@ performance %>%
             perc10th = quantile(ccc, p=0.1, na.rm = T)) %>%
   filter(cluster == "C4")
 
-## Best cluster
+## Worst cluster
 
 performance %>%
   group_by(soil_property, cluster) %>%

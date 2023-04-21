@@ -98,7 +98,7 @@ p.dispersion.clusters <- performance %>%
   theme_light() +
   theme(legend.position = "bottom",
         panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank()); p.dispersion.clusters
+        panel.grid.minor = element_blank())
 
 plot.labels.median <- read_csv("outputs/tab_statistical_test_cluster_ccc_all.csv") %>%
   mutate(soil_property = recode(soil_property,
@@ -118,7 +118,7 @@ plot.labels.median <- plot.labels.median %>%
 p.cld.clusters <- p.dispersion.clusters +
   geom_text(data = plot.labels.median, aes(label = letter),
             color = "gray30", size = 3) +
-  theme(plot.caption = element_text(size = 8, face = "italic")); p.cld.clusters
+  theme(plot.caption = element_text(size = 8, face = "italic"))
 
 ## Best combination
 
@@ -143,17 +143,16 @@ p.dispersion.vert.3 <- performance.3 %>%
   labs(colour = "", fill = "",
        y = "Lin's CCC", x = NULL) +
   theme_light() +
-  theme(legend.position = c(0.75, 0.825), # c(0,0) bottom left, c(1,1) top-right.
+  theme(legend.position = c(0.75, 0.06), # c(0,0) bottom left, c(1,1) top-right.
         legend.background = element_rect(fill = NA, colour = NA),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank()) +
-  guides(col = guide_legend(nrow = 1)); p.dispersion.vert.3
+  guides(col = guide_legend(nrow = 1))
 
 ## Together
 
 p.together <- plot_grid(p.cld.clusters, p.dispersion.vert.3, ncol = 2,
                         labels = "auto", rel_widths = c(0.75,1.25))
-p.together
 
 ggsave("outputs/plot_paper_clusters.png", p.together,
        width = 8, height = 6, dpi = 300, scale = 1, units = "in")
