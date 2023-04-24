@@ -47,7 +47,8 @@ performance <- performance %>%
   mutate(model_type = factor(model_type,
                              levels = c("PLSR",
                                         "MBL",
-                                        "Cubist")))
+                                        "Cubist"))) %>%
+  filter(!(prep_spectra == "wavelet"))
 
 ## Median soil properties
 performance %>%
@@ -55,12 +56,23 @@ performance %>%
   summarise(median_ccc = median(ccc, na.rm = T),
             iqr_ccc = IQR(ccc, na.rm = T))
 
-## Median SST
+## KSSL overall
+
 performance %>%
-  group_by(soil_property, prep_spectra) %>%
+  filter(!(prep_spectra == "wavelet")) %>%
+  filter(organization == 16) %>%
+  group_by(soil_property) %>%
   summarise(median_ccc = median(ccc, na.rm = T),
-            iqr_ccc = IQR(ccc, na.rm = T)) %>%
-  filter(prep_spectra == "SST")
+            perc10th = quantile(ccc, p=0.1, na.rm = T))
+
+## KSSL supplement
+
+# performance %>%
+#   filter(!(prep_spectra == "wavelet")) %>%
+#   arrange(soil_property, model_type, prep_spectra) %>%
+#   filter(organization == 16) %>%
+#   select(soil_property, model_type, prep_spectra, rmse, bias, rsq, ccc, rpiq) %>%
+#   clipr::write_clip()
 
 ## Median SNV
 performance %>%
@@ -68,6 +80,13 @@ performance %>%
   summarise(median_ccc = median(ccc, na.rm = T),
             perc10th = quantile(ccc, p=0.1, na.rm = T)) %>%
   filter(prep_spectra == "SNV")
+
+## Median SST
+performance %>%
+  group_by(soil_property, prep_spectra) %>%
+  summarise(median_ccc = median(ccc, na.rm = T),
+            iqr_ccc = IQR(ccc, na.rm = T)) %>%
+  filter(prep_spectra == "SST")
 
 ## Median PLSR
 performance %>%

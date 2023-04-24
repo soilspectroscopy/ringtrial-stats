@@ -29,6 +29,7 @@ performance <- performance %>%
                                           "SNV+SG1stDer",
                                           "wavelet",
                                           "SST"))) %>%
+  filter(!(prep_spectra == "wavelet")) %>%
   mutate(organization = as.factor(organization))
 
 ## all

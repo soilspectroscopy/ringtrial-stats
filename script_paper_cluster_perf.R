@@ -46,7 +46,8 @@ performance <- performance %>%
   mutate(model_type = factor(model_type,
                              levels = c("PLSR",
                                         "MBL",
-                                        "Cubist")))
+                                        "Cubist"))) %>%
+  filter(!(prep_spectra == "wavelet"))
 
 # appending metadata
 
@@ -109,3 +110,14 @@ performance %>%
   summarise(median_ccc = median(ccc, na.rm = T),
             perc10th = quantile(ccc, p=0.1, na.rm = T)) %>%
   filter(cluster == "C4")
+
+## Performance gain C2
+gain <- performance %>%
+  filter(cluster == "C2") %>%
+  filter(prep_spectra %in% c("SNV", "SST")) %>%
+  group_by(organization, soil_property, prep_spectra) %>%
+  summarise(median_ccc = median(ccc, na.rm = T)) %>%
+  pivot_wider(names_from = "prep_spectra", values_from = "median_ccc") %>%
+  mutate_if(is.numeric, round, 2) %>%
+  mutate(difference = round(((SST/SNV)-1)*100, 0))
+View(gain)
